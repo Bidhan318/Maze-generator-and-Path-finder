@@ -1,25 +1,39 @@
-#include <raylib.h>
+#include "raylib.h"
+#include "maze/maze.h"
+#include "renderer/render.h"
 
-int main()
-{
-	const int screenWidth = 800;
-	const int screenHeight = 600;
+int main() {
+    const int SCREEN_W  = 900;
+    const int SCREEN_H  = 700;
+    const int CELL_SIZE = 20;   // pixels per cell
+    const int ROWS = 25;   // number of rows
+    const int COLS = 35;   // number of cols
 
-	InitWindow(screenWidth, screenHeight, "Maze generator and Path finder");
+    InitWindow(SCREEN_W, SCREEN_H, "Maze Generator");
+    SetTargetFPS(60);
 
-	SetTargetFPS(60);
+    Maze maze(ROWS, COLS);
+    Renderer renderer(CELL_SIZE);
 
-	while (!WindowShouldClose())
-	{
-		BeginDrawing();
+    maze.generate();   // generate on startup
 
-		ClearBackground(RAYWHITE);
-		DrawText("Hello, raylib!", 190, 200, 20, LIGHTGRAY);
+    while (!WindowShouldClose()) {
 
-		EndDrawing();
-	}
+        // R to regenearte maze
+        if (IsKeyPressed(KEY_R))
+            maze.generate();
 
-	CloseWindow();
+        BeginDrawing();
+            ClearBackground(BLACK);
 
-	return 0;
+            renderer.drawMaze(maze);
+            renderer.drawStartEnd(maze);
+
+            DrawText("Press R to regenerate maze", 10, 10, 18, GRAY);
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
 }

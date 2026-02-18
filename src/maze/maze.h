@@ -40,7 +40,7 @@ public:
     int endRow = 0, endCol = 0;
 
     void initGrid();
-    void carve(int row, int col);       // recursive-backtracker core
+    void carve(int row, int col);       // recursive-backtracker core logic gere
     void removeWall(Cell& current, Cell& next, int dr, int dc);
     bool inBounds(int row, int col) const;
 };
