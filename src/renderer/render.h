@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "src/maze/maze.h"
 #include "src/algorithm/bfs.h"
+#include "src/algorithm/dfs.h"
 #include <vector>
 
 class Renderer {
@@ -10,9 +11,9 @@ public:
 
     void drawMaze(const Maze& maze);
     void drawStartEnd(const Maze& maze);
-    void drawVisited(const Maze& maze, const std::vector<Position>& visited);
-    void drawPath(const Maze& maze, const std::vector<Position>& path);
-    void drawUI(SolverState state);
+    void drawVisited(const std::vector<Position>& visited, Color color);
+    void drawPath(const std::vector<Position>& path);
+    void drawUI(SolverState state, const char* algo);
 
 private:
     int cellSize_, offsetX_, offsetY_;

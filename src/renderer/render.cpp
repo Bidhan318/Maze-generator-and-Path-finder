@@ -47,14 +47,13 @@ void Renderer::drawMaze(const Maze& maze) {
     }
 }
 
-void Renderer::drawVisited(const Maze& maze, const std::vector<Position>& visited) {
+void Renderer::drawVisited(const std::vector<Position>& visited, Color color) {
     int cs = cellSize_;
-    Color c = { 50, 130, 200, 160 };
     for (const auto& pos : visited)
-        DrawRectangle(px(pos.second) + 1, py(pos.first) + 1, cs - 2, cs - 2, c);
+        DrawRectangle(px(pos.second) + 1, py(pos.first) + 1, cs - 2, cs - 2, color);
 }
 
-void Renderer::drawPath(const Maze& maze, const std::vector<Position>& path) {
+void Renderer::drawPath(const std::vector<Position>& path) {
     int cs = cellSize_;
     Color c = { 255, 220, 0, 220 };
     for (const auto& pos : path)
@@ -67,16 +66,17 @@ void Renderer::drawStartEnd(const Maze& maze) {
     DrawRectangle(px(maze.endCol)   + 2, py(maze.endRow)   + 2, cs - 4, cs - 4, RED);
 }
 
-void Renderer::drawUI(SolverState state) {
-    DrawText("R - New maze",        10, 10, 16, GRAY);
-    DrawText("1 - BFS pathfinding", 10, 30, 16, GRAY);
+void Renderer::drawUI(SolverState state, const char* algo) {
+    DrawText("R - New maze",10, 10, 16, GRAY);
+    DrawText("1 - BFS",10, 30, 16, GRAY);
+    DrawText("2 - DFS",10, 50, 16, GRAY);
 
     const char* msg = "";
     Color col = GRAY;
-    if      (state == SolverState::IDLE)      { msg = "Press 1 to start BFS"; col = LIGHTGRAY; }
-    else if (state == SolverState::SEARCHING) { msg = "BFS searching...";      col = SKYBLUE;   }
-    else if (state == SolverState::DONE)      { msg = "Path found!";           col = YELLOW;    }
-    else if (state == SolverState::NO_PATH)   { msg = "No path found.";        col = RED;       }
+    if      (state == SolverState::IDLE)      { msg = "Press 1 or 2 to start"; col = LIGHTGRAY; }
+    else if (state == SolverState::SEARCHING) { msg = TextFormat("%s searching...", algo); col = SKYBLUE; }
+    else if (state == SolverState::DONE)      { msg = TextFormat("%s - Path found!", algo); col = YELLOW; }
+    else if (state == SolverState::NO_PATH)   { msg = "No path found."; col = RED; }
 
     DrawText(msg, 10, GetScreenHeight() - 28, 18, col);
 }
